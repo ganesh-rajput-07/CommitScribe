@@ -3,6 +3,7 @@ name: Build and Package Extension
 on:
   push:
     branches: [ main, master ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:
@@ -48,29 +49,47 @@ jobs:
         npm run compile
         npx @vscode/vsce package --allow-missing-repository --skip-license
 
+    - name: Determine Tag Name
+      id: tag_name
+      run: |
+        if [ "${{ github.ref_type }}" = "tag" ]; then
+          echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+        else
+          echo "tag=latest" >> $GITHUB_OUTPUT
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -f latest
+          git push origin :refs/tags/latest || true
+          git push origin latest --force
+        fi
+
     - name: Update README.md with Release Download Link
       run: |
         # Read version from package.json
         VERSION=$(node -p "require('./extension/package.json').version")
         REPO="${{ github.repository }}"
-        echo "Updating README.md with version v$VERSION for repository $REPO"
+        TAG="${{ steps.tag_name.outputs.tag }}"
+        echo "Updating README.md with version v$VERSION, tag $TAG for repository $REPO"
         
-        # Replace the placeholder URL in README.md
-        # Placeholder format: https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v0.0.1/commitscribe-0.0.1.vsix
-        sed -i "s|https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v[0-9.]*/commitscribe-[0-9.]*\.vsix|https://github.com/${REPO}/releases/download/v${VERSION}/commitscribe-${VERSION}.vsix|g" README.md
-        
-        # Also replace older dynamic version links if any to keep them updated
-        sed -i "s|https://github.com/${REPO}/releases/download/v[0-9.]*/commitscribe-[0-9.]*\.vsix|https://github.com/${REPO}/releases/download/v${VERSION}/commitscribe-${VERSION}.vsix|g" README.md
+        # Replace the placeholder URL in README.md with the appropriate tag URL
+        sed -i "s|https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v[0-9.]*/commitscribe-[0-9.]*\.vsix|https://github.com/${REPO}/releases/download/${TAG}/commitscribe-${VERSION}.vsix|g" README.md
+        sed -i "s|https://github.com/${REPO}/releases/download/[^/]*/commitscribe-[0-9.]*\.vsix|https://github.com/${REPO}/releases/download/${TAG}/commitscribe-${VERSION}.vsix|g" README.md
 
     - name: Commit and Push README Updates
+      if: github.ref_type != 'tag'
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add README.md
-        git diff-index --quiet HEAD || git commit -m "chore: update README.md download link to v$(node -p "require('./extension/package.json').version") [skip ci]" && git push
+        git diff-index --quiet HEAD || git commit -m "chore: update README.md download link to latest [skip ci]" && git push
 
-    - name: Upload VSIX Artifact
-      uses: actions/upload-artifact@v4
+    - name: Create or Update GitHub Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: commitscribe-vsix
-        path: extension/*.vsix
+        tag_name: ${{ steps.tag_name.outputs.tag }}
+        name: ${{ steps.tag_name.outputs.tag == 'latest' && 'Latest Development Build' || steps.tag_name.outputs.tag }}
+        draft: false
+        prerelease: ${{ steps.tag_name.outputs.tag == 'latest' }}
+        files: extension/*.vsix
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
