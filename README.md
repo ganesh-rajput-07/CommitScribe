@@ -6,6 +6,16 @@ With **100% free local models (Ollama)** or fast cloud APIs (**Groq & OpenRouter
 
 ---
 
+## 📥 Download & Install (Direct VSIX)
+
+You can download the packaged extension directly and install it manually:
+
+👉 **[Download Latest CommitScribe VSIX](https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v0.0.1/commitscribe-0.0.1.vsix)**
+
+*(To install: Open VS Code, go to the Extensions tab, click the three dots `...` in the top right, select **Install from VSIX...**, and choose the downloaded file.)*
+
+---
+
 ## ✨ Features
 *   **Free AI Commit Message Generator**: Convert complex git diffs into clean, industry-standard conventional commits (`feat:`, `fix:`, `refactor:`, etc.) with one click.
 *   **Blazing Fast Performance**: Zero-token waste optimization reduces git diff payload sizes by 80-90%, resulting in lightning-fast response times.
