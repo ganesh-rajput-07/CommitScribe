@@ -2,7 +2,7 @@ import os
 from PIL import Image
 
 def process_red_logo():
-    src_path = '/home/tusharhedange/.gemini/antigravity/brain/7e53eb48-8a4f-4b4d-a572-da0205c42211/logo_red_wireframe_1781250104621.png'
+    src_path = os.path.join(os.path.dirname(__file__), 'logo_red_wireframe.png')
     
     if not os.path.exists(src_path):
         print(f"Error: Source image not found at {src_path}")
