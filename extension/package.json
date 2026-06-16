@@ -1,0 +1,138 @@
+{
+  "name": "commitscribe",
+  "displayName": "CommitScribe",
+  "publisher": "commitscribe",
+  "description": "AI-powered git commit message generator using Ollama Free API",
+  "version": "0.0.1",
+  "icon": "logo.png",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "commitscribe.generateCommitMessage",
+        "title": "CommitScribe: Generate Commit Message",
+        "icon": {
+          "light": "logo_light.png",
+          "dark": "logo_dark.png"
+        }
+      },
+      {
+        "command": "commitscribe.generateAndCommit",
+        "title": "CommitScribe: Generate and Auto-Commit"
+      },
+      {
+        "command": "commitscribe.generatePR",
+        "title": "CommitScribe: Generate PR Template"
+      },
+      {
+        "command": "commitscribe.generateChangelog",
+        "title": "CommitScribe: Generate Changelog"
+      },
+      {
+        "command": "commitscribe.aiReview",
+        "title": "CommitScribe: Run AI Code Review"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "commitscribe.generateCommitMessage",
+          "group": "navigation",
+          "when": "scmProvider == git"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CommitScribe",
+      "properties": {
+        "commitscribe.provider": {
+          "type": "string",
+          "default": "ollama",
+          "enum": [
+            "ollama",
+            "openrouter",
+            "groq"
+          ],
+          "description": "Preferred AI provider to generate commit messages"
+        },
+        "commitscribe.model": {
+          "type": "string",
+          "default": "llama3.2:3b",
+          "enum": [
+            "qwen2.5:1.5b",
+            "llama3.2:3b",
+            "deepseek-r1:latest",
+            "gpt-oss:20b",
+            "mistral:latest"
+          ],
+          "description": "Preferred LLM model to use with Ollama"
+        },
+        "commitscribe.openrouterApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for OpenRouter (required if provider is set to OpenRouter)"
+        },
+        "commitscribe.openrouterModel": {
+          "type": "string",
+          "default": "meta-llama/llama-3-8b-instruct:free",
+          "enum": [
+            "meta-llama/llama-3-8b-instruct:free",
+            "google/gemini-2.5-flash",
+            "deepseek/deepseek-chat"
+          ],
+          "description": "Model to use with OpenRouter"
+        },
+        "commitscribe.groqApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API Key for Groq (required if provider is set to Groq)"
+        },
+        "commitscribe.groqModel": {
+          "type": "string",
+          "default": "llama-3.3-70b-versatile",
+          "enum": [
+            "llama-3.3-70b-versatile",
+            "llama-3.1-8b-instant",
+            "mixtral-8x7b-32768",
+            "gemma2-9b-it"
+          ],
+          "description": "Model to use with Groq"
+        },
+        "commitscribe.learnStyle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable learning style from recent git commit history"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "python3 process-logos.py && tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "16.x",
+    "@types/mocha": "^10.0.1",
+    "typescript": "^4.9.5",
+    "@typescript-eslint/parser": "^5.56.0",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "eslint": "^8.36.0",
+    "glob": "^8.1.0",
+    "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "axios": "^1.3.4"
+  }
+}
