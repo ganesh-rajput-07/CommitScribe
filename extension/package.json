@@ -115,7 +115,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "python3 process-logos.py && tsc -p ./",
+    "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
