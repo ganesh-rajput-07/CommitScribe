@@ -2,7 +2,7 @@
   "name": "commitscribe",
   "displayName": "CommitScribe",
   "publisher": "commitscribe",
-  "description": "AI-powered git commit message generator using Ollama Free API",
+  "description": "Free AI Git Commit Message Generator. Generate high-quality conventional commits, PR descriptions, and changelogs locally with Ollama or in the cloud using free Groq & OpenRouter models.",
   "version": "0.0.1",
   "icon": "logo.png",
   "engines": {
