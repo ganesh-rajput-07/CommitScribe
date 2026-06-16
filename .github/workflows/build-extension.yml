@@ -81,7 +81,7 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add README.md
-        git diff-index --quiet HEAD || git commit -m "chore: update README.md download link to latest [skip ci]" && git push
+        git diff --cached --quiet || (git commit -m "chore: update README.md download link to latest [skip ci]" && git push)
 
     - name: Create or Update GitHub Release
       uses: softprops/action-gh-release@v1
