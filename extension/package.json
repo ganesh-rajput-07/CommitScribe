@@ -109,6 +109,26 @@
           "type": "boolean",
           "default": true,
           "description": "Enable learning style from recent git commit history"
+        },
+        "commitscribe.commitPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Custom prompt template for commit message generation (supports {{DIFF}} and {{HISTORY_SECTION}})"
+        },
+        "commitscribe.prPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Custom prompt template for PR description generation (supports {{DIFF}})"
+        },
+        "commitscribe.changelogPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Custom prompt template for changelog generation (supports {{COMMITS}})"
+        },
+        "commitscribe.reviewPrompt": {
+          "type": "string",
+          "default": "",
+          "description": "Custom prompt template for AI code reviews (supports {{DIFF}})"
         }
       }
     }
