@@ -10,7 +10,7 @@ With **100% free local models (Ollama)** or fast cloud APIs (**Groq & OpenRouter
 
 You can download the packaged extension directly and install it manually:
 
-👉 **[Download Latest CommitScribe VSIX](https://github.com/ganesh-rajput-07/CommitScribe/releases/download/v0.0.1/commitscribe-0.0.1.vsix)**
+👉 **[Download Latest CommitScribe VSIX](https://github.com/ganesh-rajput-07/CommitScribe/releases/download/latest/commitscribe-0.0.1.vsix)**
 
 *(To install: Open VS Code, go to the Extensions tab, click the three dots `...` in the top right, select **Install from VSIX...**, and choose the downloaded file.)*
 
